@@ -5,11 +5,16 @@ import re
 # Sim = simmilarity.
 
 
-def get_input():
+
+def get_input(input_string=-1):
+
+    if input_string == -1:
+        return_value = input("You : ")
     
-    return_value = input("You : ")
-    
+    else:
+        return_value = input(input_string + " : ")
     return return_value
+
 
 
 def print_answer(answer):
@@ -63,8 +68,10 @@ def tokenize(inputt):
 def get_talk_code(inputt):
     
     data = tokenize(inputt)
-    
-    if check_ask_weather(data):
+
+    if check_teach(data):
+        return 0 # Teach language.
+    elif check_ask_weather(data):
         
         return 1 # Ask Weather.
     
@@ -87,6 +94,17 @@ def get_talk_code(inputt):
         return -1
 
 
+
+def teach_language(data, answer, know_list, answer_list):
+    if check_list_in(data, know_list):
+        answer_list[get_list_in(data, know_list)].append(answer)
+    else:
+        know_list.append(data)
+        answer_list.append(answer)
+
+def get_one_answer(answer_list, i):
+    import random
+    return(answer_list[i][random.randint(0, len(answer_list))])
 
 def check_exit(data):
     exit_list = ["exit", "bye", "quit"]
@@ -150,13 +168,42 @@ def get_country(inputt):
 
 
 
-def check_simple_say(data):
+def check_simple_say(data, know_list, answer_list):
     
     sim = False
 
+
+    sim_list = []
+    for knowing in know_list:
+        sim_list.append(get_simmilarity(data, know_list))
     
+    for simeli in sim_list:
+        if simeli > 0.65:
+            sim = True
     return sim
 
+
+def get_simple_say(inputt, know_list, answer_list):
+    data = tokenize(inputt)
+
+
+    sim_list = []
+    for knowing in know_list:
+        sim_list.append(get_simmilarity(data, know_list))
+
+    # Initailize return.
+    return_sim = -1
+    return_value = "...!"
+
+    for sim in range(0, len(sim_list)):
+        if sim_list[sim] > return_sim:
+            return_sim = sim_list[sim]
+            return_value = get_one_answer(answer_list, sim)
+    return return_value
+
+def get_one_answer(answer_list, i):
+    import random
+    return answer_list[i][random.randint(0, len(answer_list[i]))]
 
 
 def check_list_in(list1, list2):
@@ -177,6 +224,20 @@ def check_list_in(list1, list2):
 
 
 
+def get_list_in(list1, list2):
+    
+    # Check where is list1 is in list2.
+    
+    return_value = -1
+    
+    for l2 in list2:
+
+
+        if list1 == l2:
+            return_value = list2.index(l2)
+    return return_value
+
+
 def check_border(data):
     
     sim = False
@@ -190,6 +251,12 @@ def check_border(data):
     
     
     return sim
+
+def check_teach(data):
+    if "<teach>" in data:
+        return True
+    else:
+        return False
 
 
 
@@ -208,3 +275,7 @@ def count_list_in(list1, list2):
     
     
     return return_value
+
+
+def get_simmilarity(list1, list2):
+    return count_list_in(list1, list2) / len(list1)
