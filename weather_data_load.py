@@ -39,7 +39,7 @@ def get_data_with_city(city_name):
 
     u = urllib.urlopen(url)
     data = u.read()
- 
-    j = json.loads(data)
+
+    j = json.loads(data.decode('utf-8'))
 
     return j

@@ -65,7 +65,7 @@ def tokenize(inputt):
 
 
 
-def get_talk_code(inputt):
+def get_talk_code(inputt, know_list, answer_list):
     
     data = tokenize(inputt)
 
@@ -83,20 +83,21 @@ def get_talk_code(inputt):
         
         return 3 # Border check.
     
-    elif check_simple_say(data):
+    elif check_simple_say(data, know_list, answer_list):
         
         return 4 # Simple conversation.
 
     elif check_exit(data):
         return 5 # exit conversation.
     else:
-        
         return -1
 
 
 
-def teach_language(data, answer, know_list, answer_list):
-    if check_list_in(data, know_list):
+def teach_language(inputt, answer, know_list, answer_list):
+    data = tokenize(inputt)
+
+    if data in know_list:
         answer_list[get_list_in(data, know_list)].append(answer)
     else:
         know_list.append(data)
@@ -104,7 +105,8 @@ def teach_language(data, answer, know_list, answer_list):
 
 def get_one_answer(answer_list, i):
     import random
-    return(answer_list[i][random.randint(0, len(answer_list))])
+    if len(answer_list[i]) == 1 : return answer_list[i][0]
+    else : return answer_list[i][random.randint(0, len(answer_list[i]))]
 
 def check_exit(data):
     exit_list = ["exit", "bye", "quit"]
@@ -131,7 +133,6 @@ def check_ask_weather(data):
 
 
 def check_ask_greeting(data):
-    
     sim = False
     
     greet_list = ["hello","hi", "how", "me", "greet", "you", "what", "up", "bro"]
@@ -167,16 +168,14 @@ def get_country(inputt):
     return country
 
 
-
-def check_simple_say(data, know_list, answer_list):
-    
+def check_simple_say(data, know_list, answer_list):    
     sim = False
 
-
     sim_list = []
+
     for knowing in know_list:
-        sim_list.append(get_simmilarity(data, know_list))
-    
+        sim_list.append(get_simmilarity(data, knowing))
+
     for simeli in sim_list:
         if simeli > 0.65:
             sim = True
@@ -186,10 +185,9 @@ def check_simple_say(data, know_list, answer_list):
 def get_simple_say(inputt, know_list, answer_list):
     data = tokenize(inputt)
 
-
     sim_list = []
     for knowing in know_list:
-        sim_list.append(get_simmilarity(data, know_list))
+        sim_list.append(get_simmilarity(data, knowing))
 
     # Initailize return.
     return_sim = -1
@@ -199,11 +197,8 @@ def get_simple_say(inputt, know_list, answer_list):
         if sim_list[sim] > return_sim:
             return_sim = sim_list[sim]
             return_value = get_one_answer(answer_list, sim)
-    return return_value
 
-def get_one_answer(answer_list, i):
-    import random
-    return answer_list[i][random.randint(0, len(answer_list[i]))]
+    return return_value
 
 
 def check_list_in(list1, list2):
@@ -214,9 +209,7 @@ def check_list_in(list1, list2):
 
     
     for l1 in list1:
-        
         if l1 in list2:
-            
             return_value = True
     
     
@@ -278,4 +271,4 @@ def count_list_in(list1, list2):
 
 
 def get_simmilarity(list1, list2):
-    return count_list_in(list1, list2) / len(list1)
+    return count_list_in(list1, list2) / len(list2)
