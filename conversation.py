@@ -96,12 +96,13 @@ def get_talk_code(inputt, know_list, answer_list):
 
 def teach_language(inputt, answer, know_list, answer_list):
     data = tokenize(inputt)
-
+    temp = []
+    temp.append(answer)
     if data in know_list:
-        answer_list[get_list_in(data, know_list)].append(answer)
+        answer_list[get_list_in(data, know_list)].append(temp)
     else:
         know_list.append(data)
-        answer_list.append(answer)
+        answer_list.append(temp)
 
 def get_one_answer(answer_list, i):
     import random
@@ -119,14 +120,10 @@ def check_ask_weather(data):
     
     sim = False
     
-    city_list = ["seoul","kuala lumpur", "london", "new delhi", "beijing"]
-
-    
+    city_list = ["seoul","kuala lumpur", "london", "new delhi", "beijing", "seattle"]
     
     if check_list_in(city_list, data) and ("what" in data or "weather" in data):
-        
-        sim = True
-    
+        sim = True 
     
     return sim
 
@@ -135,7 +132,7 @@ def check_ask_weather(data):
 def check_ask_greeting(data):
     sim = False
     
-    greet_list = ["hello","hi", "how", "me", "greet", "you", "what", "up", "bro"]
+    greet_list = ["hello", "hi", "greet", "bro"]
 
     
     
@@ -154,8 +151,7 @@ def get_country(inputt):
     
     country = []
     
-    city_list = ["seoul","kuala lumpur", "london", "new delhi","beijing"]
-
+    city_list = ["seoul","kuala lumpur", "london", "new delhi","beijing", "seattle"]
 
   
     for dt in data:
@@ -180,7 +176,7 @@ def check_simple_say(data, know_list, answer_list):
         if simeli > 0.65:
             sim = True
     return sim
-
+            
 
 def get_simple_say(inputt, know_list, answer_list):
     data = tokenize(inputt)

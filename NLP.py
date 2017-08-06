@@ -7,8 +7,10 @@ import conversation
 
 
 def chat_bot():
-    know_list = [['you', 'are','not', 'cute'],['you', 'are', 'pretty']]
-    answer_list = [['you too! :('],['you are pretty, too!']]
+    know_list = [['>_<'],['you', 'are','not', 'cute'],['you', 'are', 'pretty'],['are', 'you', 'hungry'],\
+['are', 'you', 'sad']]
+    answer_list = [['not cute. stop it.'],['you too! :('],['you are pretty, too!'],['i am machine, so i`m not hungry.','can you teach me what is \'hungry\' measn?'],\
+['i`m machine, so i`m not sad.','Can you teach me what is feeling?']]
     conversation.print_answer("Hello there?")
     
     while True:
@@ -25,7 +27,7 @@ def chat_bot():
         elif code == 1:
             # ask weather.
             
-            print("You ask weather!")
+            print("You ask weather! Wait a second...")
 
             # Get Country names.
             
@@ -55,8 +57,6 @@ def chat_bot():
             exit()
         else :
             # Don`t know.
-            print(know_list)
-            print(answer_list)
             print("Parden me?>_<")
 
 chat_bot()
