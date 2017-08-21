@@ -1,5 +1,7 @@
 # This is ID related ( sign-in and valid api-key ) Modules.
 # This module can be used with Node server.
+# Referenced 1 : http://meonggae.blogspot.kr/2016/08/nodejs-python-shell-python.html
+# Referenced 2 : http://ngee.tistory.com/335
 
 import sys
 import pymongo as mogdb
