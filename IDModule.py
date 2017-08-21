@@ -57,3 +57,16 @@ def connectToDB(to='localhost',port=27017):
         resultValue = Boolean value if id exists, return True, else, return false.
     '''
     mogdb.MongoClient(to, port)
+
+if sys.argv[1] == "isIdExist" :
+    isIdExist(sys.argv[2])
+elif sys.argv[1] == "getAPIKey":
+    getAPIKey(sys.argv[2])
+elif sys.argv[1] == "signIn":
+    signIn(sys.argv[2])
+elif sys.argv[1] == "teachLanguage":
+    teachLanguage(sys.argv[2], sys.argv[3], sys.argv[4])
+elif sys.argv[1] == "talkToJavis":
+    talkToJavis(sys.argv[2], sys.argv[3])
+else :
+    print("Wrong Function call.")
