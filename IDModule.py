@@ -4,6 +4,8 @@
 import sys
 import pymongo as mogdb
 
+connection = mogdb.MongoClient('localhost', 27017)
+
 def isIdExist(ID):
     '''
     ARGS : 
@@ -11,6 +13,13 @@ def isIdExist(ID):
     RETURNS :
         resultValue = Boolean value if id exists, return True, else, return false.
     '''
+    IDList = connection.find({"ID" : ID})
+    if len(IDList) > 0:
+        print("True") # Node can read with console print.
+        return True
+    else:
+        print("False") # Node can read with console print.
+        return False
 
 def getAPIKey(ID):
     '''
@@ -19,6 +28,9 @@ def getAPIKey(ID):
     RETURNS :
         APIKey = Get appropriate api key with ID.
     '''
+    IDList = connection.find({"ID" : ID})
+    print(IDList.APIKey) # Node can read with console print.
+    return IDList.APIKey
 
 def signIn(ID):
     '''
@@ -27,13 +39,17 @@ def signIn(ID):
     RETURNS :
         APIKey = Get appropriate api key with ID.
     '''
+    APIKey = generateAPIKey(ID)
+
+    print(APIKey) # Node can read with console print.
+    return APIKey
     
 
 def teachLanguage(input, output, id) :
     '''
     ARGS :
-        input = 
-        output = 
+        input = what you are says.
+        output = what javis want to say about this.
         ID  = ID which user makes. Can be seperated with Javis`s save locate.
     RETURNS :
         actionState = True, False or added, generated `s action state.
@@ -42,7 +58,7 @@ def teachLanguage(input, output, id) :
 def talkToJavis(input, id) :
     '''
     ARGS :
-        input =  
+        input = what you are says.
         ID  = ID which user makes. Can be seperated with Javis`s save locate.
     RETURNS :
         resultValue = Boolean value if id exists, return True, else, return false.
@@ -58,15 +74,25 @@ def connectToDB(to='localhost',port=27017):
     '''
     mogdb.MongoClient(to, port)
 
+def generateAPIKey(ID):
+    '''
+    ARGS :
+        ID = ID which user makes. Can be seperated with Javis`s save locate.
+    RETURNS :
+        APIKey = api key with given ID.
+    '''
+    return ID
+
+# connectToDB()
 if sys.argv[1] == "isIdExist" :
-    isIdExist(sys.argv[2])
+    sys.argv[1](sys.argv[2])
 elif sys.argv[1] == "getAPIKey":
-    getAPIKey(sys.argv[2])
+    sys.argv[1](sys.argv[2])
 elif sys.argv[1] == "signIn":
-    signIn(sys.argv[2])
+    sys.argv[1](sys.argv[2])
 elif sys.argv[1] == "teachLanguage":
-    teachLanguage(sys.argv[2], sys.argv[3], sys.argv[4])
+    sys.argv[1](sys.argv[2], sys.argv[3], sys.argv[4])
 elif sys.argv[1] == "talkToJavis":
-    talkToJavis(sys.argv[2], sys.argv[3])
+    sys.argv[1](sys.argv[2], sys.argv[3])
 else :
     print("Wrong Function call.")
