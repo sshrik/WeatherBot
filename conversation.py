@@ -132,7 +132,7 @@ def check_ask_weather(data):
 def check_ask_greeting(data):
     sim = False
     
-    greet_list = ["hello", "hi", "greet", "bro"]
+    greet_list = ["hello", "Hello", "hi", "Hi", "greet", "friend", "bro"]
 
     
     
